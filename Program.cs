@@ -1,101 +1,93 @@
-﻿//деньги в банке
-using System.Data;
+﻿using CreditInBank.Exceptions;
+using System.Globalization;
+using static CreditInBank.Exceptions.BankOperation;
+
 
 internal class Program
 {
-    public static void RequestNumberInput(out string inputLoan)
+    public static void Main(string[] args)
     {
-        //Укажите сумму, которую хотите получить от банка
-        Console.Write("Specify the amount you want to receive from the bank: ");
-        inputLoan = Console.ReadLine();
-        //если пользователь указал запятую вместо точки в числе
-        inputLoan.Replace(",", ".");
+        //bank
+        Bank bank = new Bank() { BankMoney = 1000, ConsoleInteraction = new ConsoleInteraction() };
+
+        //bank client
+        Person bankClient = new Person();
+
+        bank.LoanRequest(bankClient);
     }
-    private static void ReadInputLoanValue(ref double loan)
+}
+
+//обработка входных данных с консоли
+class ConsoleInteraction
+{
+    public decimal loan;
+
+    public void ReadInputLoanValue()
     {
         string inputLoan;
-        
+
         //пока клиент не введёт число, просить его ввести новое значение
         while (true)
         {
             //просим пользователя ввести запрашиваемую сумму
-            RequestNumberInput(out inputLoan);
+            Console.Write("\n\nSpecify the amount you want to receive from the bank: ");
+            inputLoan = Console.ReadLine();
 
-            //Если пользователь ввёл число,
-            //то выходим из цикла
-            if (double.TryParse(inputLoan, out loan))
+            //определяем стиль числа и региональные параметры
+            NumberStyles style = NumberStyles.Number | NumberStyles.AllowCurrencySymbol;
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("ru-Ru");
+
+            //если пользователь ввёл число больше 0, то больше НЕ отправляем запрос пользователю
+            if (decimal.TryParse(inputLoan, style, culture, out loan) && loan > 0)
                 break;
 
             //Вы ввели не число. Попробуйте, пожалуйста, снова  
-            Console.WriteLine("\n\nIncorrect amount. Please try again");
-        }
-    } 
-
-    private static void Main(string[] args)
-    {
-        //деньги банка
-        double bankMoney = 10000;
-        //остаток денег в банке после предоставления кредита клиенту
-        double bankMoneyBalance = 0;
-        //деньги на счету клиента
-        double personMoney = 0;
-        //кредит или заём
-        double loan = 0;
-
-        if (bankMoney <= 0)
-        {
-            //В настоящий момент банк не поддерживает оформление кредитов. Приносим свои извинения
-            Console.WriteLine("At the moment the bank does not support the processing of loans. We apologise");
-        }
-        else
-        {
-            ReadInputLoanValue(ref loan);
-
-            if (loan == 0)
-            {
-                //на указанную суму кредит не предоставляется
-                Console.WriteLine($"No credit will be granted for {loan} {Currency.rubbles}\n\n");
-                ReadInputLoanValue(ref loan);
-            }
-
-            try
-            {
-                bankMoneyBalance = bankMoney - loan;
-
-                if (bankMoneyBalance <= 0)
-                    //Недостаточно средств в банке
-                    throw new InvalidBankOperationExeption("There are not enough funds in the bank", "code line 67. The amount requested is greater than the bank's available money");
-                else
-                {
-                    bankMoneyBalance = bankMoney - loan;
-                    personMoney += loan;
-                    //Кредит оформлен. Сумма перечислена на Ваш счёт
-                    Console.WriteLine($"The loan has been processed. The amount of {loan} {Currency.rubbles} has been transferred to your account");
-                }
-            }
-            catch (InvalidBankOperationExeption ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.ExeptionDiscription);
-            }
+            Console.WriteLine("Incorrect amount. Please try again");
         }
     }
 }
 
-public class InvalidBankOperationExeption : InvalidOperationException
+class Bank
 {
-    public string ExeptionDiscription { get; private set; }
+    //деньги банка
+    public decimal BankMoney { get; set; }
+    public ConsoleInteraction ConsoleInteraction { get; set; }
 
-    public InvalidBankOperationExeption(string message, string discription) : base(message) 
+    //оформление кредита
+    public void LoanApply(Person client)
     {
-        ExeptionDiscription = discription;
+        decimal bankMoneyBalance = BankMoney - ConsoleInteraction.loan;
+
+        //если в банке МЕНЬШЕ денег чем запрашивается
+        if (bankMoneyBalance < 0)
+            throw new InvalidBankOperationExeption("There are not enough funds in the bank. The amount requested is greater than the bank's available money");
+
+        BankMoney = bankMoneyBalance;
+        client.BankAccountAmount += ConsoleInteraction.loan;
+
+        //Кредит оформлен. Сумма перечислена на Ваш счёт
+        Console.WriteLine($"The loan has been processed. The amount of {ConsoleInteraction.loan} {Currency.rubbles} has been transferred to your account");
+    }
+
+    public void LoanRequest(Person bankClient)
+    {
+        while (BankMoney >= 0)
+        {
+            ConsoleInteraction.ReadInputLoanValue();
+            LoanApply(bankClient);
+        }
+    }
+
+    public enum Currency
+    {
+        rubbles,
+        dollars,
+        euros
     }
 }
 
-//Валюта
-public enum Currency
+class Person
 {
-    rubbles,
-    dollar,
-    euro
+    //сумма на банковском счету
+    public decimal BankAccountAmount { get; set; }
 }
