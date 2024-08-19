@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/ICeNutRr+w9QY48lbhDTDUhbDeWBbC94SVAUk4MIqmkcOi2LtOjSbSuVy7+vHPZ0AZhZ1yMCT2YW1CfTH8Z9Q==",
+  "dgSpecHash": "oCPt/oeDpoDz8/2YT8G0AQ1hv/+FLL2f6j2DZF28POwrMaqwcJDbFaWEhqxYWOP1Rl0DmeyUXAHz88/XuYsLhA==",
   "success": true,
-  "projectFilePath": "E:\\Стажировка С#\\Вспоминаю C#\\Initial CreditInBank\\GitRepo\\Bank-loan\\CreditInBank.csproj",
+  "projectFilePath": "E:\\Стажировка С#\\Практика\\Вспоминаю C#\\Initial CreditInBank\\GitRepo\\Bank-loan\\CreditInBank.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Стажировка С#\\Вспоминаю C#\\Initial CreditInBank\\GitRepo\\Bank-loan\\CreditInBank.csproj",
+      "projectUniqueName": "E:\\Стажировка С#\\Практика\\Вспоминаю C#\\Initial CreditInBank\\GitRepo\\Bank-loan\\CreditInBank.csproj",
       "projectName": "CreditInBank",
-      "projectPath": "E:\\Стажировка С#\\Вспоминаю C#\\Initial CreditInBank\\GitRepo\\Bank-loan\\CreditInBank.csproj",
+      "projectPath": "E:\\Стажировка С#\\Практика\\Вспоминаю C#\\Initial CreditInBank\\GitRepo\\Bank-loan\\CreditInBank.csproj",
       "packagesPath": "C:\\Users\\Вероника\\.nuget\\packages\\",
-      "outputPath": "E:\\Стажировка С#\\Вспоминаю C#\\Initial CreditInBank\\GitRepo\\Bank-loan\\obj\\",
+      "outputPath": "E:\\Стажировка С#\\Практика\\Вспоминаю C#\\Initial CreditInBank\\GitRepo\\Bank-loan\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Вероника\\AppData\\Roaming\\NuGet\\NuGet.Config",

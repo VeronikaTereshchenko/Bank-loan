@@ -1,93 +1,111 @@
-﻿using CreditInBank.Exceptions;
-using System.Globalization;
-using static CreditInBank.Exceptions.BankOperation;
-
+﻿using System.Globalization;
+using CreditInBank.Exceptions;
+using CreditInBank.Services.BankServices;
+using CreditInBank.Services.ClientServices;
 
 internal class Program
 {
     public static void Main(string[] args)
     {
-        //bank
-        Bank bank = new Bank() { BankMoney = 1000, ConsoleInteraction = new ConsoleInteraction() };
+        Bank bank = new Bank(1000);
 
         //bank client
-        Person bankClient = new Person();
+        Client bankClient = new Client(0);
 
         bank.LoanRequest(bankClient);
     }
 }
 
-//обработка входных данных с консоли
-class ConsoleInteraction
-{
-    public decimal loan;
+//class Bank
+//{
+//    private decimal bankMoney;
+//    private decimal loanAmount;
 
-    public void ReadInputLoanValue()
-    {
-        string inputLoan;
+//    public Bank(decimal bankMoney)
+//    {
+//        this.bankMoney = bankMoney;
+//    }
+//    //деньги банка
+//    public decimal GetBankMoney()
+//    {
+//        return bankMoney;
+//    }
 
-        //пока клиент не введёт число, просить его ввести новое значение
-        while (true)
-        {
-            //просим пользователя ввести запрашиваемую сумму
-            Console.Write("\n\nSpecify the amount you want to receive from the bank: ");
-            inputLoan = Console.ReadLine();
+//    //оформление кредита
+//    public void LoanApply(Client client)
+//    {
+//        decimal bankMoneyBalance = bankMoney - loanAmount;
 
-            //определяем стиль числа и региональные параметры
-            NumberStyles style = NumberStyles.Number | NumberStyles.AllowCurrencySymbol;
-            CultureInfo culture = CultureInfo.CreateSpecificCulture("ru-Ru");
+//        //если в банке МЕНЬШЕ денег чем запрашивается
+//        if (bankMoneyBalance < 0)
+//            throw new InvalidBankOperationExeption("There are not enough funds in the bank. The amount requested is greater than the bank's available money");
 
-            //если пользователь ввёл число больше 0, то больше НЕ отправляем запрос пользователю
-            if (decimal.TryParse(inputLoan, style, culture, out loan) && loan > 0)
-                break;
+//        bankMoney = bankMoneyBalance;
+//        client.AddLoanAmount(loanAmount);
 
-            //Вы ввели не число. Попробуйте, пожалуйста, снова  
-            Console.WriteLine("Incorrect amount. Please try again");
-        }
-    }
-}
+//        //Кредит оформлен. Сумма перечислена на Ваш счёт
+//        Console.WriteLine($"The loan has been processed. The amount of {loanAmount} {Currency.rubbles} has been transferred to your account");
+//    }
 
-class Bank
-{
-    //деньги банка
-    public decimal BankMoney { get; set; }
-    public ConsoleInteraction ConsoleInteraction { get; set; }
+//    public void LoanRequest(Client bankClient)
+//    {
+//        //пока в банке есть деньги, предлагаем взять кредит
+//        while (bankMoney >= 0)
+//        {
+//            ReadInputLoanValue();
+//            LoanApply(bankClient);
+//        }
+//    }
 
-    //оформление кредита
-    public void LoanApply(Person client)
-    {
-        decimal bankMoneyBalance = BankMoney - ConsoleInteraction.loan;
+//    public void ReadInputLoanValue()
+//    {
+//        //пока клиент не введёт число, просить его ввести новое значение
+//        while (true)
+//        {
+//            //просим пользователя ввести запрашиваемую сумму
+//            Console.Write("\n\nSpecify the amount you want to receive from the bank: ");
+//            string inputLoan = Console.ReadLine();
 
-        //если в банке МЕНЬШЕ денег чем запрашивается
-        if (bankMoneyBalance < 0)
-            throw new InvalidBankOperationExeption("There are not enough funds in the bank. The amount requested is greater than the bank's available money");
+//            //определяем стиль числа и региональные параметры
+//            NumberStyles style = NumberStyles.Number | NumberStyles.AllowCurrencySymbol;
+//            CultureInfo culture = CultureInfo.CreateSpecificCulture("ru-Ru");
 
-        BankMoney = bankMoneyBalance;
-        client.BankAccountAmount += ConsoleInteraction.loan;
+//            //если пользователь ввёл число больше 0, то больше НЕ отправляем запрос пользователю
+//            if (decimal.TryParse(inputLoan, style, culture, out loanAmount) && loanAmount > 0)
+//                break;
 
-        //Кредит оформлен. Сумма перечислена на Ваш счёт
-        Console.WriteLine($"The loan has been processed. The amount of {ConsoleInteraction.loan} {Currency.rubbles} has been transferred to your account");
-    }
+//            //Вы ввели не число. Попробуйте, пожалуйста, снова  
+//            Console.WriteLine("Incorrect amount. Please try again");
+//        }
+//    }
 
-    public void LoanRequest(Person bankClient)
-    {
-        while (BankMoney >= 0)
-        {
-            ConsoleInteraction.ReadInputLoanValue();
-            LoanApply(bankClient);
-        }
-    }
+//    public enum Currency
+//    {
+//        rubbles,
+//        dollars,
+//        euros
+//    }
+//}
 
-    public enum Currency
-    {
-        rubbles,
-        dollars,
-        euros
-    }
-}
+//class Client
+//{
+//    private decimal bankAccountAmount;
 
-class Person
-{
-    //сумма на банковском счету
-    public decimal BankAccountAmount { get; set; }
-}
+//    //конструктор
+//    public Client(decimal bankAccountAmount)
+//    {
+//        this.bankAccountAmount = bankAccountAmount;
+//    }
+
+//    //возврат суммы на банковском счету клиента
+//    public decimal GetBankAccountAmount()
+//    {
+//        return this.bankAccountAmount;
+//    }
+
+//    //добавление суммы кредита на счёт клиента
+//    public void AddLoanAmount(decimal loanAmount)
+//    {
+//        bankAccountAmount += loanAmount;
+//    }
+//}
