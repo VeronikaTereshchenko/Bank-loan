@@ -8,18 +8,12 @@ namespace CreditInBank.Services.ClientServices
 {
     public class Client
     {
+        //сумма денег у клиента на банковском счету
         private decimal bankAccountAmount;
 
-        //конструктор
         public Client(decimal bankAccountAmount)
         {
             this.bankAccountAmount = bankAccountAmount;
-        }
-
-        //возврат суммы на банковском счету клиента
-        public decimal GetBankAccountAmount()
-        {
-            return bankAccountAmount;
         }
 
         //добавление суммы кредита на счёт клиента

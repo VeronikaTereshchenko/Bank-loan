@@ -11,14 +11,17 @@ namespace CreditInBank.Services.BankServices
 {
     public class Bank
     {
+        //деньги, принадлежащие банку
         private decimal bankMoney;
+        //сумма кредита, которую указывает пользователь
         private decimal loanAmount;
 
         public Bank(decimal bankMoney)
         {
             this.bankMoney = bankMoney;
         }
-        //деньги банка
+
+        //получить значение банковских денег
         public decimal GetBankMoney()
         {
             return bankMoney;
@@ -40,6 +43,7 @@ namespace CreditInBank.Services.BankServices
             Console.WriteLine($"The loan has been processed. The amount of {loanAmount} {Currency.rubbles} has been transferred to your account");
         }
 
+        //просим ввести сумму кредита и вызываем операцию рассмотрения выдачи кредита
         public void LoanRequest(Client bankClient)
         {
             //пока в банке есть деньги, предлагаем взять кредит
@@ -50,6 +54,7 @@ namespace CreditInBank.Services.BankServices
             }
         }
 
+        //получение от пользователя суммы кредита
         public void ReadInputLoanValue()
         {
             //пока клиент не введёт число, просить его ввести новое значение
@@ -72,6 +77,7 @@ namespace CreditInBank.Services.BankServices
             }
         }
 
+        //валюты
         public enum Currency
         {
             rubbles,
