@@ -9,17 +9,19 @@ namespace CreditInBank.Services.ClientServices
     public class Client
     {
         //сумма денег у клиента на банковском счету
-        private decimal bankAccountAmount;
+        //customer's money on the bank account
+        private decimal _bankAccountAmount;
 
         public Client(decimal bankAccountAmount)
         {
-            this.bankAccountAmount = bankAccountAmount;
+            _bankAccountAmount = bankAccountAmount;
         }
 
         //добавление суммы кредита на счёт клиента
+        //Add loan amount to the customer's account
         public void AddLoanAmount(decimal loanAmount)
         {
-            bankAccountAmount += loanAmount;
+            _bankAccountAmount += loanAmount;
         }
     }
 }

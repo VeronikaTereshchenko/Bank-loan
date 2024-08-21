@@ -7,7 +7,7 @@ internal class Program
 {
     public static void Main(string[] args)
     {
-        Bank bank = new Bank(1000);
+        Bank bank = new Bank() { BankMoney = 1000 };
         Client bankClient = new Client(0);
         
         //рассмотрение заявки на кредит
